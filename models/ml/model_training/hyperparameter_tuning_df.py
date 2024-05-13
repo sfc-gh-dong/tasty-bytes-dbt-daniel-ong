@@ -37,7 +37,7 @@ def model(dbt, session):
 
     features_df = train_df.sample(n=1000).select(F.array_construct('*').alias("feature_vector"))
     feature_columns = train_df.columns
-    tuning_df = params_df.crossJoin(features_df)
+    tuning_df = params_df.crossJoin(features_df, lsuffix="_l")
 
 
     schema = T.StructType(
