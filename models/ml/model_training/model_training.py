@@ -69,7 +69,7 @@ def model(dbt, session):
         is_permanent=True,
         replace=True,
         stage_location="@FORECAST_STAGE",
-        packages=["snowflake-snowpark-python", "xgboost", "joblib"]
+        packages=["snowflake-snowpark-python", "scikit-learn", "xgboost", "joblib"]
     )
 
     # Call the training stored procedure
