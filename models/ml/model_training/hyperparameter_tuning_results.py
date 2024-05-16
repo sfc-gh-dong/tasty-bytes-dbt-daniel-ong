@@ -1,4 +1,5 @@
 import snowflake.snowpark.functions as F
+import pandas as pd
 
 
 def model(dbt, session):
@@ -16,5 +17,8 @@ def model(dbt, session):
             ).over(partition_by="hp_id")
         )
     ).sort(F.col('RMSE').asc())
+    best_param_id = tune_results.select("hp_id").collect()[0][0]
+    params = (tuning_df.drop("feature_vector").filter(F.col("hp_id") == best_param_id).distinct())
+    params = params.drop("hp_id").to_pandas().iloc[0, :].to_dict()
 
-    return tune_results
+    return session.createDataFrame(pd.DataFrame(params, index=[0]))
