@@ -55,11 +55,12 @@ def model(dbt, session):
     training_table = dbt.ref("demand_forecast_train_demo")
     train_df = dbt.ref("demand_forecast_train")
 
-    best_param_id = tune_results_df.sort(F.col('RMSE').asc()).select('hp_id').collect()[0][0]
+    #best_param_id = tune_results_df.sort(F.col('RMSE').asc()).select('hp_id').collect()[0][0]
     feature_cols = train_df.drop("quantity").columns
 
-    params = tuning_df.drop("feature_vector").filter(F.col("HP_ID")==best_param_id).distinct()
-    params = params.drop('HP_ID').to_pandas().iloc[0,:].to_dict()
+    #params = tuning_df.drop("feature_vector").filter(F.col("HP_ID")==best_param_id).distinct()
+    #params = params.drop('HP_ID').to_pandas().iloc[0,:].to_dict()
+    params = tune_results_df.to_pandas().iloc[0,:].to_dict()
     target_col = "QUANTITY"
     model_name = "xgboost_demand_forecast_model.sav"
 
